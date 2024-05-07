@@ -3,6 +3,14 @@ import argparse
 import requests
 from ValueSeries import ValueSeries
 
+"""
+This script demonstrates how to read and interpret a Course of Fire definition. 
+It outputs, to the command line, human readable values from the Course of Fire definition, including the Range Scripts.
+
+Usage:
+python ./interpret-cof.py -h
+Course of Fire definitions are defined at https://support.scopos.tech/index.html?definition-course-of-fire.html
+"""
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--cof", required = False, type=str, help = "The Course of Fire Definition SetName to try and interpret. Defaults to 'v3.0:ntparc:Three-Position Air Rifle 3x10'", default = "v3.0:ntparc:Three-Position Air Rifle 3x10")
 ap.add_argument("--range-scripts", required = False, action="store_true", help = "Prints a list of the Range Script names and indexes.")
@@ -12,6 +20,8 @@ ap.add_argument("--range-script", required = False, type=int, default=-1, help="
 
 args = vars(ap.parse_args())
 cofSetName = args["cof"]
+
+#This is a shared API Key that is rate limited. Visit www.scopos.tech/restapi to learn how to obtain your own.
 xApiKey = "GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33"
 
 def downloadCourseOfFire() :
@@ -197,13 +207,15 @@ def printSegmentGroups( rangeScriptIndex ) :
             shotAttributes = getRangeScriptList( "ShotAttributes", command, sgDefaultCommand, rsDefaultCommand )
             timer = getRangeScriptTimer( "Timer", command, sgDefaultCommand, rsDefaultCommand )
             timerCommand = getRangeScriptTimerCommand( "TimerCommand", command, sgDefaultCommand, rsDefaultCommand )
-            occuresAt = getRangeScriptTimer( "OccuresAt", command, sgDefaultCommand, rsDefaultCommand )
+            occuresAt = getRangeScriptTimer( "OccursAt", command, sgDefaultCommand, rsDefaultCommand )
             redLight = getRangeScriptLight( "RedLight", command, sgDefaultCommand, rsDefaultCommand )
             greenLight = getRangeScriptLight( "GreenLight", command, sgDefaultCommand, rsDefaultCommand )
             targetLight = getRangeScriptLight( "TargetLight", command, sgDefaultCommand, rsDefaultCommand )
-            print( "   Command '{}' {}".format( commandText, "automated command at " + occuresAt ) )
+            print( "   Command '{}'".format( commandText ) )
             if notes :
                 print( "     Notes: '{}'".format( notes ) )
+            if occuresAt :
+                print( "     Automated command occuring at {}".format( occuresAt ) )
             if shotAttributes :
                 print( "     Attributes to apply to each shot: {}".format( shotAttributes ))
             if timer :
@@ -212,6 +224,7 @@ def printSegmentGroups( rangeScriptIndex ) :
                 print( "     Range Timer {} ".format( timerCommand ) )
             if redLight != "NONE" or greenLight != "NONE" or targetLight != "NONE" :
                 print( "     {}, {}, {}".format( "Red X " + redLight, "Green O "  + greenLight, "Target Light " + targetLight ) )
+            print()
 
 
         for segment in segmentGroup.get( "Segments", []) :
@@ -223,6 +236,7 @@ def printSegmentGroups( rangeScriptIndex ) :
             print( "     Expecting {} number of shots on Stage Label '{}'. ".format( numberOfShots if numberOfShots >= 0 else "unlimited", stageLabel ) )
             if shotAttributes :
                 print( "     Attributes to apply to each shot: {}".format( shotAttributes ))
+            print()
 
 
 downloadCourseOfFire()
