@@ -15,7 +15,7 @@ Ensure that the chosen result course of fire is from a electronically scored mat
 If the retrieved match has shots that were scored at the same time, an assertion exception will be thrown. 
 
 This script requires the matplotlib library. To install use:
-	pip install matplotlib
+$	pip install matplotlib
 
 Usage:
 python ./graph-shots-over-match.py -h
