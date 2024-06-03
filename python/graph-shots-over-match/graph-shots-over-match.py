@@ -19,8 +19,6 @@ $	pip install matplotlib
 
 Usage:
 python ./graph-shots-over-match.py -h
-
-
 """
 
 ap = argparse.ArgumentParser()
@@ -40,6 +38,7 @@ def MakeAPICall(api_url, query_params = {}):
 		"x-api-key": xApiKey
 	}
 	response_get = requests.get(api_url, headers=headers, params=query_params)
+	
 	# Check if the GET request was successful
 	if response_get.status_code == 200:
 		#Parse API response
