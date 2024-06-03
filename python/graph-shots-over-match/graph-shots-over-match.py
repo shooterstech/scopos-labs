@@ -1,7 +1,6 @@
 import requests
-import matplotlib #pip install matplotlib
+import matplotlib
 import matplotlib.pyplot as plt
-import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
 import argparse
@@ -15,8 +14,13 @@ More detailed documentation of this API can be found at https://app.swaggerhub.c
 Ensure that the chosen result course of fire is from a electronically scored match that includes the time each shot was fired. 
 If the retrieved match has shots that were scored at the same time, an assertion exception will be thrown. 
 
+This script requires the matplotlib library. To install use:
+	pip install matplotlib
+
 Usage:
 python ./graph-shots-over-match.py -h
+
+
 """
 
 ap = argparse.ArgumentParser()
