@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
-
+import argparse
 
 """
 This python script graphs the shot scores of an athlete from a single match over time. 
@@ -14,10 +14,18 @@ More detailed documentation of this API can be found at https://app.swaggerhub.c
 
 Ensure that the chosen result course of fire is from a electronically scored match that includes the time each shot was fired. 
 If the retrieved match has shots that were scored at the same time, an assertion exception will be thrown. 
+
+Usage:
+python ./graph-shots-over-match.py -h
 """
 
-X_API_KEY = "" #replace with your Scopos x-api-key
-RCOFID = "" #replace with your desire result course of fire ID
+ap = argparse.ArgumentParser()
+ap.add_argument("-r", "--rcofid", required = True, type=str, help = "The Result Course of Fire ID to graph.")
+args = ap.parse_args()
+
+#This is a shared API Key that is rate limited. Visit www.scopos.tech/restapi to learn how to obtain your own.
+xApiKey = "GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33"
+
 
 athenaAPIUrl = "https://api.orionscoringsystem.com"
 getRCOFPath = "/resultcof/{rcofId}"
@@ -25,7 +33,7 @@ getRCOFPath = "/resultcof/{rcofId}"
 
 def MakeAPICall(api_url, query_params = {}):
 	headers = {
-		"x-api-key": X_API_KEY
+		"x-api-key": xApiKey
 	}
 	response_get = requests.get(api_url, headers=headers, params=query_params)
 	# Check if the GET request was successful
@@ -46,7 +54,7 @@ def GetResultCOF(rcofId):
 	return apiResponse.get("ResultCOF", {})
 
 #Retrieve the result course of fire detail using the Scopos API
-rcof = GetResultCOF(RCOFID)
+rcof = GetResultCOF(args.rcofid)
 
 #The shots of the rcof are formatted as a dictionary where the key is the sequence number and the value is the shot information
 shots = rcof["Shots"]
