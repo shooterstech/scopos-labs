@@ -11,8 +11,8 @@ If the time taken between two shots is greater than one minute, the interval is 
 The shot data from the match is retrieved using the Scopos public GetResultCourseOfFire API.
 More detailed documentation of this API can be found at https://app.swaggerhub.com/apis/Shooters-Technology/api/1.6.2#/Orion%20Match/GetResultCourseOfFire for documentation.
 
-Ensure that the chosen result course of fire is from a electronically scored match that includes the time each shot was fired. 
-If the retrieved match has shots that were scored at the same time, an assertion exception will be thrown. 
+Ensure that the chosen Result Course of Fire is from an electronically scored match that includes the time each shot was fired. 
+If the retrieved match has shots that were scored simultaneously (such as paper targets), an assertion exception will be thrown. 
 
 This script requires the matplotlib library. To install use:
 $	pip install matplotlib
@@ -56,7 +56,7 @@ def GetResultCOF(rcofId):
 	apiResponse = MakeAPICall(fullUrl)
 	return apiResponse.get("ResultCOF", {})
 
-#Retrieve the result course of fire detail using the Scopos API
+#Retrieve the Result Course of Fire detail using the Scopos API
 rcof = GetResultCOF(args.rcofid)
 
 #The shots of the rcof are formatted as a dictionary where the key is the sequence number and the value is the shot information
@@ -81,7 +81,8 @@ for shot in shotsInOrder:
 		timeScored = datetime.strptime(shot["TimeScored"], '%Y-%m-%dT%H:%M:%S')
 	timesInOrder.append(timeScored)
 
-assert len(timesInOrder) == len(set(timesInOrder)), "Not all shots scored at separate times"
+#Assert that shots were scored at different times
+assert len(timesInOrder) == len(set(timesInOrder)), "Not all shots scored at separate times, try a different Result Course of Fire ID"
 
 #Convert the list of datetimes to a list of seconds from the start of the match
 secondsFromStart = list(map(lambda t: (t - timesInOrder[0]).total_seconds(), timesInOrder))
