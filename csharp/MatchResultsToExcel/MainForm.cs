@@ -55,6 +55,7 @@ namespace MatchResultsToExcel
 			
 			try
 			{
+				//GetMatchDetail API Call https://app.swaggerhub.com/apis-docs/Shooters-Technology/api/1.8#/Orion%20Match/GetMatchDetail 
 				_matchResponse = await _matchClient.GetMatchPublicAsync(_matchId);
 				if (_matchResponse.StatusCode != System.Net.HttpStatusCode.OK)
 				{
@@ -63,9 +64,11 @@ namespace MatchResultsToExcel
 
 				var resultEvents = _matchResponse.Match.ResultEvents;
 				int items = 0;
-				for (int i = 0; i < resultEvents.Count; ++i)
+				for (int i = 0; i < resultEvents.Count; ++i) 
 				{
-					// Create Label For Event Name
+					//each Result Event contains associated Result Lists
+
+					// Create label for Result Event name
 					Label eventLbl = new Label();
 					eventLbl.Text = resultEvents[i].DisplayName;
 					eventLbl.Font = new Font(eventLbl.Font, FontStyle.Bold);
@@ -76,31 +79,28 @@ namespace MatchResultsToExcel
 					var resultLists = resultEvents[i].ResultLists;
 					for (int j = 0; j < resultLists.Count; ++j)
 					{
-						//for each result list within the event, create dropdown
+						//for each Result List within the Result Event, create a label and dropdown
 
-						// Create ComboBox
 						ComboBox rlCmb = new ComboBox();
 						rlCmb.DropDownStyle = ComboBoxStyle.DropDownList;
 						rlCmb.Location = new System.Drawing.Point(155, (items) * 30);
 						rlCmb.Width = 40;
 
-
-						// Create Label
 						Label rlLbl = new Label();
 						rlLbl.Text = resultLists[j].ResultName;
 						rlLbl.AutoSize = true;
 						rlLbl.Location = new System.Drawing.Point(25, 5 + (items++) * 30);
 
-
-
-						for (int k = 0; k <= 100; k++)
+						for (int k = 0; k <= 100; k++) //populate dropdown with 1-100
 							rlCmb.Items.Add(k);
-						rlCmb.SelectedIndex = 0;
 
-						_resultLabels.Add(rlLbl);
+						rlCmb.SelectedIndex = 0; //default to 0 selected
+
+						//keep track of the created labels and combo boxes
+						_resultLabels.Add(rlLbl); 
 						_resultBoxes.Add(rlCmb);
 
-						// Add to panel (not the form)
+						// Add to panel
 						panel1.Controls.Add(rlLbl);
 						panel1.Controls.Add(rlCmb);
 
@@ -164,12 +164,12 @@ namespace MatchResultsToExcel
 						{
 							continue;
 						}
-						//Get results from API
+						//GetResultList API Call https://app.swaggerhub.com/apis-docs/Shooters-Technology/api/1.8#/Orion%20Match/GetResultList 
 						var request = new GetResultListPublicRequest(_matchId, resultName);
 						var resultListResponse = await _matchClient.GetResultListPublicAsync(request);
 
 						var results = resultListResponse.ResultList.Items;
-						var eventName = resultListResponse.ResultList.EventName;
+						var eventName = resultListResponse.ResultList.EventName; //The EventName that the ResultList ranks based on (Qualification, Standing, Kneeling, ...)
 
 						// Create a new worksheet for this event
 						var ws = package.Workbook.Worksheets.Add(resultName);
@@ -191,8 +191,8 @@ namespace MatchResultsToExcel
 						{
 							var cellRow = rInd + 2;
 							ws.Cells[cellRow, 1].Value = results[rInd].Rank;
-							ws.Cells[cellRow, 2].Value = results[rInd].Participant.DisplayName; //displayName
-							ws.Cells[cellRow, 3].Value = results[rInd].EventScores[eventName].ScoreFormatted; //event score
+							ws.Cells[cellRow, 2].Value = results[rInd].Participant.DisplayName; 
+							ws.Cells[cellRow, 3].Value = results[rInd].EventScores[eventName].ScoreFormatted;
 						}
 
 						// Auto-fit columns
