@@ -12,6 +12,13 @@ using System.ComponentModel;
 
 namespace MatchResultsToExcel
 {
+	/*
+	 * Match Results To Excel Form
+	 * 
+	 * This form allows someone to export a subset of match resuls to an excel file.
+	 * Enter the Match ID, then select the number of results from each Result List to export. 
+	 * For example, selecting 3 for Individual - All will export the top three competitors Rank, Display Name, and Score. 
+	 */
 	public partial class MainForm : Form
 	{
 		private OrionMatchAPIClient _matchClient;
