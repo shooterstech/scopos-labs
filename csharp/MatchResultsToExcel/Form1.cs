@@ -2,9 +2,11 @@ using Microsoft.VisualBasic;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Scopos.BabelFish.APIClients;
+using Scopos.BabelFish.DataModel.Athena.Match;
 using Scopos.BabelFish.DataModel.Definitions;
 using Scopos.BabelFish.DataModel.OrionMatch;
 using Scopos.BabelFish.Requests.OrionMatchAPI;
+using Scopos.BabelFish.Responses.OrionMatchAPI;
 using Scopos.BabelFish.Runtime;
 using System.ComponentModel;
 
@@ -16,6 +18,8 @@ namespace MatchResultsToExcel
 		private List<Label> _resultLabels;
 		private List<ComboBox> _resultBoxes;
 		private MatchID _matchId;
+
+		private GetMatchPublicResponse _matchResponse;
 		public Form1()
 		{
 			InitializeComponent();
@@ -51,13 +55,13 @@ namespace MatchResultsToExcel
 			
 			try
 			{
-				var matchDetailResponse = await _matchClient.GetMatchPublicAsync(_matchId);
-				if (matchDetailResponse.StatusCode != System.Net.HttpStatusCode.OK)
+				_matchResponse = await _matchClient.GetMatchPublicAsync(_matchId);
+				if (_matchResponse.StatusCode != System.Net.HttpStatusCode.OK)
 				{
-					throw new Exception(matchDetailResponse.ExceptionMessage);
+					throw new Exception(_matchResponse.ExceptionMessage);
 				}
 
-				var resultEvents = matchDetailResponse.Match.ResultEvents;
+				var resultEvents = _matchResponse.Match.ResultEvents;
 				int items = 0;
 				for (int i = 0; i < resultEvents.Count; ++i)
 				{
@@ -117,9 +121,6 @@ namespace MatchResultsToExcel
 				button1.Enabled = true;
 			}
 
-
-
-
 		}
 
 		private async void button2_Click(object sender, EventArgs e) //save to excel
@@ -141,7 +142,7 @@ namespace MatchResultsToExcel
 				{
 					saveFileDialog.Title = "Save Match Results";
 					saveFileDialog.Filter = "Excel Files|*.xlsx";
-					saveFileDialog.FileName = "MatchResults.xlsx";
+					saveFileDialog.FileName = $"{_matchResponse.Match.Name}_MatchResults.xlsx";
 					if (saveFileDialog.ShowDialog() == DialogResult.OK)
 					{
 						filePath = saveFileDialog.FileName;
