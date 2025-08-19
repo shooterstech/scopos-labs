@@ -7,10 +7,6 @@
       "RelativeMoniker": "D:0:0:{DF532F56-6D43-4E69-969F-03D192BCFC92}|MatchResultsToExcel.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DF532F56-6D43-4E69-969F-03D192BCFC92}|MatchResultsToExcel.csproj|z:\\documents\\shooterstech\\repos\\scopos-labs\\csharp\\matchresultstoexcel\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{DF532F56-6D43-4E69-969F-03D192BCFC92}|MatchResultsToExcel.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DF532F56-6D43-4E69-969F-03D192BCFC92}|MatchResultsToExcel.csproj|z:\\documents\\shooterstech\\repos\\scopos-labs\\csharp\\matchresultstoexcel\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{DF532F56-6D43-4E69-969F-03D192BCFC92}|MatchResultsToExcel.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -40,11 +36,11 @@
         },
         {
           "DockedWidth": 1246,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
@@ -56,33 +52,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-08-19T19:56:28.57Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAIoAAACAy8zMzIwhwJsAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAGoAAAAAxszMzMwuwIIAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-19T14:49:26.407Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",

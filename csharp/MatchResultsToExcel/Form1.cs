@@ -39,20 +39,22 @@ namespace MatchResultsToExcel
 				return;
 
 			}
-			button1.Enabled = false;
 			button1.Text = "loading...";
+			button1.Enabled = false;
+			button2.Enabled = false;
 
 			//clear previous match info
 			panel1.Controls.Clear();
 			_resultLabels.Clear();
 			_resultBoxes.Clear();
+
+			
 			try
 			{
 				var matchDetailResponse = await _matchClient.GetMatchPublicAsync(_matchId);
 				if (matchDetailResponse.StatusCode != System.Net.HttpStatusCode.OK)
 				{
-					MessageBox.Show($"Failed to retrieve Match ID {_matchId.ToString()}: {matchDetailResponse.ExceptionMessage}");
-					return;
+					throw new Exception(matchDetailResponse.ExceptionMessage);
 				}
 
 				var resultEvents = matchDetailResponse.Match.ResultEvents;
@@ -101,10 +103,13 @@ namespace MatchResultsToExcel
 					}
 
 				}
+
+				button2.Enabled = true; //only enable save button if results were successfully loaded 
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show($"Failed to get results for Match ID {_matchId.ToString()}: {ex.Message}");
+				
 			}
 			finally
 			{
@@ -120,12 +125,33 @@ namespace MatchResultsToExcel
 		private async void button2_Click(object sender, EventArgs e) //save to excel
 		{
 
+			if (_resultBoxes.All(cmb => cmb.SelectedIndex == 0)) //if all result lists are selected as '0'
+			{
+				MessageBox.Show("Zero results are selected");
+				return;
+			}
+
 			button2.Enabled = false;
 			button2.Text = "Saving...";
-
-			var filePath = @"c:\temp\MatchResults.xlsx";
+			
 			try
 			{
+				string filePath;
+				using (var saveFileDialog = new SaveFileDialog())
+				{
+					saveFileDialog.Title = "Save Match Results";
+					saveFileDialog.Filter = "Excel Files|*.xlsx";
+					saveFileDialog.FileName = "MatchResults.xlsx";
+					if (saveFileDialog.ShowDialog() == DialogResult.OK)
+					{
+						filePath = saveFileDialog.FileName;
+					}
+					else
+					{
+						return;
+					}
+				}
+
 				using (var package = new ExcelPackage())
 				{
 					for (int i = 0; i < _resultLabels.Count; ++i)

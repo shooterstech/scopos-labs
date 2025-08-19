@@ -100,4 +100,3 @@ Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\System.Security.Cryptography.Pkcs.dll
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\System.Security.Cryptography.Xml.dll
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
-Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\appsettings.json

@@ -77,6 +77,7 @@
 			// button2
 			// 
 			button2.Anchor = AnchorStyles.Bottom;
+			button2.Enabled = false;
 			button2.Location = new Point(133, 559);
 			button2.Name = "button2";
 			button2.Size = new Size(113, 26);
