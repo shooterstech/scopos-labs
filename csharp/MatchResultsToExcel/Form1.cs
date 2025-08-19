@@ -1,29 +1,37 @@
 using Microsoft.VisualBasic;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Scopos.BabelFish.APIClients;
+using Scopos.BabelFish.DataModel.Definitions;
 using Scopos.BabelFish.DataModel.OrionMatch;
+using Scopos.BabelFish.Requests.OrionMatchAPI;
 using Scopos.BabelFish.Runtime;
+using System.ComponentModel;
 
 namespace MatchResultsToExcel
 {
 	public partial class Form1 : Form
 	{
-		private int controlCount = 0;
 		private OrionMatchAPIClient _matchClient;
-		 
+		private List<Label> _resultLabels;
+		private List<ComboBox> _resultBoxes;
+		private MatchID _matchId;
 		public Form1()
 		{
 			InitializeComponent();
 			//if you use this code to develop an application, you'll need to request your own x api key
-			Initializer.Initialize("GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33", false); 
+			Initializer.Initialize("GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33", false);
 			_matchClient = new OrionMatchAPIClient();
+			_resultLabels = new List<Label>();
+			_resultBoxes = new List<ComboBox>();
+			ExcelPackage.License.SetNonCommercialOrganization("Scopos Labs");
 		}
 
 		private async void button1_Click(object sender, EventArgs e) //find result lists and populate panel
 		{
-			MatchID matchId;
 			try
 			{
-				matchId = new MatchID(textBox1.Text);
+				_matchId = new MatchID(textBox1.Text);
 			}
 			catch (FormatException)
 			{
@@ -33,95 +41,156 @@ namespace MatchResultsToExcel
 			}
 			button1.Enabled = false;
 			button1.Text = "loading...";
+
+			//clear previous match info
 			panel1.Controls.Clear();
-			
-
-
-			
-
-			var matchDetailResponse = await _matchClient.GetMatchPublicAsync(matchId);
-
-			var resultEvents = matchDetailResponse.Match.ResultEvents;
-			int yPos = 30;
-			int yInc = 40;
-			int items = 0;
-			for (int i = 0; i < resultEvents.Count; ++i)
+			_resultLabels.Clear();
+			_resultBoxes.Clear();
+			try
 			{
-				// Create Label For Event Name
-				Label eventLbl = new Label();
-				eventLbl.Text = resultEvents[i].DisplayName;
-				eventLbl.Font = new Font(eventLbl.Font, FontStyle.Bold);
-				eventLbl.AutoSize = true;
-				eventLbl.Location = new System.Drawing.Point(20, (items++) * 30 +10);
-				panel1.Controls.Add(eventLbl);
-
-				var resultLists = resultEvents[i].ResultLists;
-				for(int j = 0; j < resultLists.Count; ++j)
+				var matchDetailResponse = await _matchClient.GetMatchPublicAsync(_matchId);
+				if (matchDetailResponse.StatusCode != System.Net.HttpStatusCode.OK)
 				{
-					//for each result list within the event, create dropdown
-
-					// Create ComboBox
-					ComboBox rlCmb = new ComboBox();
-					rlCmb.DropDownStyle = ComboBoxStyle.DropDownList;
-					rlCmb.Location = new System.Drawing.Point(155, (items) * 30);
-					rlCmb.Width = 40;
-					
-
-					// Create Label
-					Label rlLbl = new Label();
-					rlLbl.Text = resultLists[j].ResultName;
-					rlLbl.AutoSize = true;
-					rlLbl.Location = new System.Drawing.Point(25,  5+ (items++) * 30);
-
-					
-
-					for (int k = 0; k <= 100; k++)
-						rlCmb.Items.Add(k);
-					rlCmb.SelectedIndex = 0;
-
-					// Add to panel (not the form)
-					panel1.Controls.Add(rlLbl);
-					panel1.Controls.Add(rlCmb);
-
+					MessageBox.Show($"Failed to retrieve Match ID {_matchId.ToString()}: {matchDetailResponse.ExceptionMessage}");
+					return;
 				}
 
+				var resultEvents = matchDetailResponse.Match.ResultEvents;
+				int items = 0;
+				for (int i = 0; i < resultEvents.Count; ++i)
+				{
+					// Create Label For Event Name
+					Label eventLbl = new Label();
+					eventLbl.Text = resultEvents[i].DisplayName;
+					eventLbl.Font = new Font(eventLbl.Font, FontStyle.Bold);
+					eventLbl.AutoSize = true;
+					eventLbl.Location = new System.Drawing.Point(20, (items++) * 30 + 10);
+					panel1.Controls.Add(eventLbl);
+
+					var resultLists = resultEvents[i].ResultLists;
+					for (int j = 0; j < resultLists.Count; ++j)
+					{
+						//for each result list within the event, create dropdown
+
+						// Create ComboBox
+						ComboBox rlCmb = new ComboBox();
+						rlCmb.DropDownStyle = ComboBoxStyle.DropDownList;
+						rlCmb.Location = new System.Drawing.Point(155, (items) * 30);
+						rlCmb.Width = 40;
+
+
+						// Create Label
+						Label rlLbl = new Label();
+						rlLbl.Text = resultLists[j].ResultName;
+						rlLbl.AutoSize = true;
+						rlLbl.Location = new System.Drawing.Point(25, 5 + (items++) * 30);
+
+
+
+						for (int k = 0; k <= 100; k++)
+							rlCmb.Items.Add(k);
+						rlCmb.SelectedIndex = 0;
+
+						_resultLabels.Add(rlLbl);
+						_resultBoxes.Add(rlCmb);
+
+						// Add to panel (not the form)
+						panel1.Controls.Add(rlLbl);
+						panel1.Controls.Add(rlCmb);
+
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Failed to get results for Match ID {_matchId.ToString()}: {ex.Message}");
+			}
+			finally
+			{
+				button1.Text = "Find Result Lists";
+				button1.Enabled = true;
 			}
 
 
-			/*
-			controlCount++;
 
-			// Create Label
-			Label lbl = new Label();
-			lbl.Text = "Select number " + controlCount + ":";
-			lbl.AutoSize = true;
-			lbl.Location = new System.Drawing.Point(20, 30 + (controlCount - 1) * 40);
-
-			// Create ComboBox
-			ComboBox cmb = new ComboBox();
-			cmb.DropDownStyle = ComboBoxStyle.DropDownList;
-			cmb.Location = new System.Drawing.Point(150, 25 + (controlCount - 1) * 40);
-			cmb.Width = 80;
-
-			// Fill with numbers 0–10
-			for (int i = 0; i <= 10; i++)
-				cmb.Items.Add(i);
-
-			// Add to panel (not the form)
-			panel1.Controls.Add(lbl);
-			panel1.Controls.Add(cmb);
-			*/
-
-
-			button1.Text = "Find Result Lists";
-			button1.Enabled = true;
-			
 
 		}
 
-		private void button2_Click(object sender, EventArgs e) //save to excel
+		private async void button2_Click(object sender, EventArgs e) //save to excel
 		{
 
+			button2.Enabled = false;
+			button2.Text = "Saving...";
+
+			var filePath = @"c:\temp\MatchResults.xlsx";
+			try
+			{
+				using (var package = new ExcelPackage())
+				{
+					for (int i = 0; i < _resultLabels.Count; ++i)
+					{
+						var resultName = _resultLabels[i].Text;
+						var numResults = _resultBoxes[i].SelectedIndex; //selected index is equivalent to selected number
+
+						if (numResults == 0)
+						{
+							continue;
+						}
+						//Get results from API
+						var request = new GetResultListPublicRequest(_matchId, resultName);
+						var resultListResponse = await _matchClient.GetResultListPublicAsync(request);
+
+						var results = resultListResponse.ResultList.Items;
+						var eventName = resultListResponse.ResultList.EventName;
+
+						// Create a new worksheet for this event
+						var ws = package.Workbook.Worksheets.Add(resultName);
+
+						// --- Header Row ---
+						ws.Cells[1, 1].Value = "Rank";
+						ws.Cells[1, 2].Value = "Display Name";
+						ws.Cells[1, 3].Value = "Score";
+
+						using (var headerRange = ws.Cells[1, 1, 1, 3])
+						{
+							headerRange.Style.Font.Bold = true;
+							headerRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+							headerRange.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+						}
+
+
+						for (int rInd = 0; rInd < numResults && rInd < results.Count; ++rInd)
+						{
+							var cellRow = rInd + 2;
+							ws.Cells[cellRow, 1].Value = results[rInd].Rank;
+							ws.Cells[cellRow, 2].Value = results[rInd].Participant.DisplayName; //displayName
+							ws.Cells[cellRow, 3].Value = results[rInd].EventScores[eventName].ScoreFormatted; //event score
+						}
+
+						// Auto-fit columns
+						ws.Cells[ws.Dimension.Address].AutoFitColumns();
+						ws.View.FreezePanes(2, 1); // freeze top row
+					}
+
+					// Save file
+					package.SaveAs(new FileInfo(filePath));
+
+				}
+				MessageBox.Show($"Successfully saved results to {filePath}");
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Failed to save result data: {ex.Message}");
+			}
+			finally
+			{
+				button2.Enabled = true;
+				button2.Text = "Save To Excel";
+			}
+			
+
+			
 		}
 	}
 }
