@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "dgSpecHash": "dc4J9nx9eok=",
+  "success": true,
+  "projectFilePath": "Z:\\Documents\\ShootersTech\\repos\\scopos-labs\\csharp\\MatchResultsToExcel\\MatchResultsToExcel.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\benwolin\\.nuget\\packages\\amazon.extensions.cognitoauthentication\\2.5.5\\amazon.extensions.cognitoauthentication.2.5.5.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\awssdk.cognitoidentity\\3.7.300.74\\awssdk.cognitoidentity.3.7.300.74.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\awssdk.cognitoidentityprovider\\3.7.303.19\\awssdk.cognitoidentityprovider.3.7.303.19.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\awssdk.core\\3.7.400.2\\awssdk.core.3.7.400.2.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\awssdk.securitytoken\\3.7.300.75\\awssdk.securitytoken.3.7.300.75.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\awssignatureversion4\\4.0.6\\awssignatureversion4.4.0.6.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\nlog\\5.3.4\\nlog.5.3.4.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\questpdf\\2025.7.0\\questpdf.2025.7.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\scopos.babelfish\\1.9.2.8\\scopos.babelfish.1.9.2.8.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\system.configuration.configurationmanager\\9.0.0\\system.configuration.configurationmanager.9.0.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\system.diagnostics.eventlog\\9.0.0\\system.diagnostics.eventlog.9.0.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\system.io.pipelines\\9.0.0\\system.io.pipelines.9.0.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.0\\system.security.cryptography.protecteddata.9.0.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\system.text.encodings.web\\9.0.0\\system.text.encodings.web.9.0.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\system.text.json\\9.0.0\\system.text.json.9.0.0.nupkg.sha512",
+    "C:\\Users\\benwolin\\.nuget\\packages\\zxing.net\\0.16.10\\zxing.net.0.16.10.nupkg.sha512"
+  ],
+  "logs": []
+}
