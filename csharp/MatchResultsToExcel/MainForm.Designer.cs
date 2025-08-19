@@ -1,6 +1,6 @@
 ﻿namespace MatchResultsToExcel
 {
-	partial class Form1
+	partial class MainForm
 	{
 		/// <summary>
 		///  Required designer variable.
@@ -28,23 +28,23 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			button1 = new Button();
+			buttonFindResults = new Button();
 			label1 = new Label();
-			textBox1 = new TextBox();
+			textBoxMatchId = new TextBox();
 			panel1 = new Panel();
-			button2 = new Button();
+			buttonSaveExcel = new Button();
 			SuspendLayout();
 			// 
-			// button1
+			// buttonFindResults
 			// 
-			button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-			button1.Location = new Point(242, 24);
-			button1.Name = "button1";
-			button1.Size = new Size(123, 23);
-			button1.TabIndex = 0;
-			button1.Text = "Find Result Lists";
-			button1.UseVisualStyleBackColor = true;
-			button1.Click += button1_Click;
+			buttonFindResults.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+			buttonFindResults.Location = new Point(242, 24);
+			buttonFindResults.Name = "buttonFindResults";
+			buttonFindResults.Size = new Size(123, 23);
+			buttonFindResults.TabIndex = 0;
+			buttonFindResults.Text = "Find Result Lists";
+			buttonFindResults.UseVisualStyleBackColor = true;
+			buttonFindResults.Click += buttonFindResults_Click;
 			// 
 			// label1
 			// 
@@ -57,13 +57,13 @@
 			label1.TabIndex = 1;
 			label1.Text = "Enter MatchID";
 			// 
-			// textBox1
+			// textBoxMatchId
 			// 
-			textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-			textBox1.Location = new Point(100, 24);
-			textBox1.Name = "textBox1";
-			textBox1.Size = new Size(136, 23);
-			textBox1.TabIndex = 2;
+			textBoxMatchId.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			textBoxMatchId.Location = new Point(100, 24);
+			textBoxMatchId.Name = "textBoxMatchId";
+			textBoxMatchId.Size = new Size(136, 23);
+			textBoxMatchId.TabIndex = 2;
 			// 
 			// panel1
 			// 
@@ -74,29 +74,29 @@
 			panel1.Size = new Size(353, 492);
 			panel1.TabIndex = 3;
 			// 
-			// button2
+			// buttonSaveExcel
 			// 
-			button2.Anchor = AnchorStyles.Bottom;
-			button2.Enabled = false;
-			button2.Location = new Point(133, 559);
-			button2.Name = "button2";
-			button2.Size = new Size(113, 26);
-			button2.TabIndex = 4;
-			button2.Text = "Save To Excel";
-			button2.UseVisualStyleBackColor = true;
-			button2.Click += button2_Click;
+			buttonSaveExcel.Anchor = AnchorStyles.Bottom;
+			buttonSaveExcel.Enabled = false;
+			buttonSaveExcel.Location = new Point(133, 559);
+			buttonSaveExcel.Name = "buttonSaveExcel";
+			buttonSaveExcel.Size = new Size(113, 26);
+			buttonSaveExcel.TabIndex = 4;
+			buttonSaveExcel.Text = "Save To Excel";
+			buttonSaveExcel.UseVisualStyleBackColor = true;
+			buttonSaveExcel.Click += buttonSaveExcel_Click;
 			// 
-			// Form1
+			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(379, 594);
-			Controls.Add(button2);
+			Controls.Add(buttonSaveExcel);
 			Controls.Add(panel1);
-			Controls.Add(textBox1);
+			Controls.Add(textBoxMatchId);
 			Controls.Add(label1);
-			Controls.Add(button1);
-			Name = "Form1";
+			Controls.Add(buttonFindResults);
+			Name = "MainForm";
 			Text = "Match Results To Excel";
 			ResumeLayout(false);
 			PerformLayout();
@@ -104,10 +104,10 @@
 
 		#endregion
 
-		private Button button1;
+		private Button buttonFindResults;
 		private Label label1;
-		private TextBox textBox1;
+		private TextBox textBoxMatchId;
 		private Panel panel1;
-		private Button button2;
+		private Button buttonSaveExcel;
 	}
 }

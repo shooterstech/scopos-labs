@@ -3,7 +3,6 @@ Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\MatchResultsToExcel.runtimeconfig.json
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\MatchResultsToExcel.dll
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\MatchResultsToExcel.pdb
-Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\obj\Debug\net8.0-windows\MatchResultsToExcel.Form1.resources
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\obj\Debug\net8.0-windows\MatchResultsToExcel.csproj.GenerateResource.cache
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\obj\Debug\net8.0-windows\MatchResultsToExcel.GeneratedMSBuildEditorConfig.editorconfig
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\obj\Debug\net8.0-windows\MatchResultsToExcel.AssemblyInfoInputs.cache
@@ -100,3 +99,4 @@ Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\System.Security.Cryptography.Pkcs.dll
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\System.Security.Cryptography.Xml.dll
 Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+Z:\Documents\ShootersTech\repos\scopos-labs\csharp\MatchResultsToExcel\obj\Debug\net8.0-windows\MatchResultsToExcel.MainForm.resources

@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace MatchResultsToExcel
 {
-	public partial class Form1 : Form
+	public partial class MainForm : Form
 	{
 		private OrionMatchAPIClient _matchClient;
 		private List<Label> _resultLabels;
@@ -20,7 +20,7 @@ namespace MatchResultsToExcel
 		private MatchID _matchId;
 
 		private GetMatchPublicResponse _matchResponse;
-		public Form1()
+		public MainForm()
 		{
 			InitializeComponent();
 			//if you use this code to develop an application, you'll need to request your own x api key
@@ -31,11 +31,11 @@ namespace MatchResultsToExcel
 			ExcelPackage.License.SetNonCommercialOrganization("Scopos Labs");
 		}
 
-		private async void button1_Click(object sender, EventArgs e) //find result lists and populate panel
+		private async void buttonFindResults_Click(object sender, EventArgs e) //find result lists and populate panel
 		{
 			try
 			{
-				_matchId = new MatchID(textBox1.Text);
+				_matchId = new MatchID(textBoxMatchId.Text);
 			}
 			catch (FormatException)
 			{
@@ -43,9 +43,9 @@ namespace MatchResultsToExcel
 				return;
 
 			}
-			button1.Text = "loading...";
-			button1.Enabled = false;
-			button2.Enabled = false;
+			buttonFindResults.Text = "loading...";
+			buttonFindResults.Enabled = false;
+			buttonSaveExcel.Enabled = false;
 
 			//clear previous match info
 			panel1.Controls.Clear();
@@ -108,7 +108,7 @@ namespace MatchResultsToExcel
 
 				}
 
-				button2.Enabled = true; //only enable save button if results were successfully loaded 
+				buttonSaveExcel.Enabled = true; //only enable save button if results were successfully loaded 
 			}
 			catch (Exception ex)
 			{
@@ -117,13 +117,13 @@ namespace MatchResultsToExcel
 			}
 			finally
 			{
-				button1.Text = "Find Result Lists";
-				button1.Enabled = true;
+				buttonFindResults.Text = "Find Result Lists";
+				buttonFindResults.Enabled = true;
 			}
 
 		}
 
-		private async void button2_Click(object sender, EventArgs e) //save to excel
+		private async void buttonSaveExcel_Click(object sender, EventArgs e) //save to excel
 		{
 
 			if (_resultBoxes.All(cmb => cmb.SelectedIndex == 0)) //if all result lists are selected as '0'
@@ -132,8 +132,8 @@ namespace MatchResultsToExcel
 				return;
 			}
 
-			button2.Enabled = false;
-			button2.Text = "Saving...";
+			buttonSaveExcel.Enabled = false;
+			buttonSaveExcel.Text = "Saving...";
 			
 			try
 			{
@@ -212,8 +212,8 @@ namespace MatchResultsToExcel
 			}
 			finally
 			{
-				button2.Enabled = true;
-				button2.Text = "Save To Excel";
+				buttonSaveExcel.Enabled = true;
+				buttonSaveExcel.Text = "Save To Excel";
 			}
 			
 
