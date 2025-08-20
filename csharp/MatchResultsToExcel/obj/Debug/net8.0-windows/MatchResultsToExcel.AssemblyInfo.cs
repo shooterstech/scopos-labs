@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MatchResultsToExcel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0bbd70f190ae08b44f94457682caf2b06f3d1241")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14c53f061d8f2a099fa4e3bcd99acc28a7ded7e1")]
 [assembly: System.Reflection.AssemblyProductAttribute("MatchResultsToExcel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MatchResultsToExcel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
