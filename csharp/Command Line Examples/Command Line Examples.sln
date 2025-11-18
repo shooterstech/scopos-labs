@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Definition API Example", "Definition API Example\Definition API Example.csproj", "{8AA351E7-EA93-42A2-8B87-DCA73C8555E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Match API Example", "Match API Example\Match API Example.csproj", "{55AAF5AE-4B27-4999-867D-A6AC7A1F8BD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AA351E7-EA93-42A2-8B87-DCA73C8555E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AA351E7-EA93-42A2-8B87-DCA73C8555E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AA351E7-EA93-42A2-8B87-DCA73C8555E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AA351E7-EA93-42A2-8B87-DCA73C8555E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55AAF5AE-4B27-4999-867D-A6AC7A1F8BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55AAF5AE-4B27-4999-867D-A6AC7A1F8BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55AAF5AE-4B27-4999-867D-A6AC7A1F8BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55AAF5AE-4B27-4999-867D-A6AC7A1F8BD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8BDD429-24D7-4F55-B5FF-5BCB1782A622}
+	EndGlobalSection
+EndGlobal

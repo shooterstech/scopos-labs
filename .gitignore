@@ -124,4 +124,15 @@ Sphinx-Autodoc/rst/*.rst
 Sphinx-Autodoc/extras
 Sphinx-Autodoc/warnings.txt
 
-Version.py
+#Visual Studio Files
+**/.svn
+**/bin/
+**/obj/
+**/publish/
+**/packages/
+**/*.DS_Store
+**/.vs/**
+**/Debug/**
+**/x64/**
+**/nogit/**
+**/._*.graffle
