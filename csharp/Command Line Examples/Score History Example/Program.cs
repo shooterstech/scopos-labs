@@ -1,8 +1,5 @@
 ﻿using Scopos.BabelFish.APIClients;
-using Scopos.BabelFish.DataActors.ResultListFormatter;
-using Scopos.BabelFish.DataActors.ResultListFormatter.UserProfile;
 using Scopos.BabelFish.DataModel.Definitions;
-using Scopos.BabelFish.DataModel.OrionMatch;
 using Scopos.BabelFish.DataModel.ScoreHistory;
 using Scopos.BabelFish.Helpers;
 using Scopos.BabelFish.Requests.ScoreHistoryAPI;
