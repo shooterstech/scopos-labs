@@ -51,19 +51,23 @@ if (getMatchResponse.HasOkStatusCode) {
                     Console.WriteLine( $"Show results for {resultList.Name}" );
 
                     //Print the header row
-                    foreach (var colIndex in rlif.GetShownColumnIndexes()) {
-                        Console.Write( rlif.GetColumnHeaderCell( colIndex ).Text );
+                    //Not shown in this example, the header row and header cells are have .ClassList property, containing a list of css classes to decorate them with.
+                    foreach (var headerCell in rlif.GetShownHeaderRow()) {
+                        Console.Write( headerCell.Text );
                         Console.Write( "  " );
                     }
                     Console.WriteLine();
 
                     //Print the results, one row at a time.
+                    //Not shown in this example, each row and cell are have .ClassList property, containing a list of css classes to decorate them with.
                     foreach (var row in rlif.ShownRows) {
-                        foreach (var colIndex in rlif.GetShownColumnIndexes()) {
-                            Console.Write( row.GetColumnBodyCell( colIndex ).Text );
-                            Console.Write( "  " );
+                        foreach (var multilineRow in row) {
+                            foreach (var cell in multilineRow.GetShownRow()) {
+                                Console.Write( cell.Text );
+                                Console.Write( "  " );
+                            }
+                            Console.WriteLine();
                         }
-                        Console.WriteLine();
                     }
                 }
                 Console.WriteLine();

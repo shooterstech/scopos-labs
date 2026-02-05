@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35327.3
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definition API Example", "Definition API Example\Definition API Example.csproj", "{8AA351E7-EA93-42A2-8B87-DCA73C8555E9}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Score History Example", "Score History Example\Score History Example.csproj", "{62996605-EC42-4901-877C-2270784A6FF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shot Input Example", "Shot Input Example\Shot Input Example.csproj", "{FDEFD3B8-FAB4-4261-A567-35A1FEC723CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compare Athlete Names", "Compare Athlete Names\Compare Athlete Names.csproj", "{3F78EB77-9E7D-4A47-97D5-15BB05CE5C18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FDEFD3B8-FAB4-4261-A567-35A1FEC723CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEFD3B8-FAB4-4261-A567-35A1FEC723CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEFD3B8-FAB4-4261-A567-35A1FEC723CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F78EB77-9E7D-4A47-97D5-15BB05CE5C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F78EB77-9E7D-4A47-97D5-15BB05CE5C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F78EB77-9E7D-4A47-97D5-15BB05CE5C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F78EB77-9E7D-4A47-97D5-15BB05CE5C18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

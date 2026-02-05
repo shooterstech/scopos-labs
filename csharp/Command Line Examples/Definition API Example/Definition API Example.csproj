@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Scopos.BabelFish" Version="1.11.1.12" />
+    <PackageReference Include="Scopos.BabelFish.Core" Version="1.11.5.2" />
   </ItemGroup>
 
 </Project>
