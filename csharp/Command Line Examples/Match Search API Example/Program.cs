@@ -1,32 +1,44 @@
 ﻿using Scopos.BabelFish.APIClients;
-using Scopos.BabelFish.Helpers;
 using Scopos.BabelFish.DataActors.OrionMatch;
-using Scopos.BabelFish.DataActors.ResultListFormatter;
-using Scopos.BabelFish.DataActors.ResultListFormatter.UserProfile;
-using Scopos.BabelFish.DataModel.OrionMatch;
+using Scopos.BabelFish.Helpers;
 using Scopos.BabelFish.Requests.OrionMatchAPI;
 using Scopos.BabelFish.Runtime;
 using static Scopos.BabelFish.DataActors.OrionMatch.CompareMatchAbbr;
 
-// You may use GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33 as a x-api-key to start working with our API.
-// However, this api key is limited in its use, and should not be used in any real application.
-Initializer.Initialize( "GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33", false );
+/*
+ * Uses the MatchSearch request to look up matches a club has hosted. 
+ * Displays information about the match, including making a call to GetSquaddingList to show the number of participants.
+ */
+
+//Try and read the x api key from environment variable. If it is there, use it. Else use the shared (really not recommended) x api key.
+string? xApiKey = Environment.GetEnvironmentVariable( "ScoposXApiKey " );
+if (xApiKey == null)
+    // You may use GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33 as a x-api-key to start working with our API.
+    // However, this api key is limited in its use, and should not be used in any real application.
+    Initializer.Initialize( "GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33", false );
+else
+    Initializer.Initialize( xApiKey, false );
+
+//Set the local store directory, even though we really dont' use it much in this script. 
 DefinitionAPIClient.LocalStoreDirectory = new DirectoryInfo( @"C:\temp" );
 
+//Instantiate a match api client
 var client = new OrionMatchAPIClient();
 
+//figure out our search parameters
+//To have consistence in our example, retreiving matches from the year 2025.
 int? distance = null;
-DateTime year25 = DateTime.Parse("2025/01/01"); // 1 January 2025
-DateTime? startDate = year25.AddDays(-365); // need to set
-DateTime? endDate = year25.AddDays(0); // need to set
+DateTime year25 = DateTime.Parse( "2025/01/01" ); // 1 January 2025
+DateTime? startDate = year25.AddDays( -365 ); // need to set
+DateTime? endDate = year25.AddDays( 0 ); // need to set
 int limit = 10;
 double? longitude = null;
 double? latitude = null;
 var shootingStyle = "";
 string ownerId = "OrionAccount002948"; // Dubois Junior Rifle Team
 
-var request = new MatchSearchPublicRequest()
-{
+//Create the request object
+var request = new MatchSearchPublicRequest() {
     Distance = distance, // null
     StartDate = startDate, // default is today, a year ago
     EndDate = endDate, // default is today
@@ -38,45 +50,44 @@ var request = new MatchSearchPublicRequest()
 };
 
 // Retrieve MatchAbbrList
-var matchSearchResponse = await client.GetMatchSearchPublicAsync(request);
+var matchSearchResponse = await client.GetMatchSearchPublicAsync( request );
 
-// Retreives information about the match
+// Check the status code
 if (matchSearchResponse.HasOkStatusCode) {
+
     // Extract the list of matches
     var matchSearchList = matchSearchResponse.MatchSearchList;
     Console.WriteLine( "Items Returned: " + matchSearchList.Items.Count() );      // amount of items returned from search based owner ID and Limit (10)
-    Console.WriteLine( "Search Dates: " + matchSearchList.StartDate.ToShortDateString() + " - " + matchSearchList.EndDate.ToShortDateString());
+    Console.WriteLine( "Search Dates: " + matchSearchList.StartDate.ToShortDateString() + " - " + matchSearchList.EndDate.ToShortDateString() );
 
     Console.WriteLine( "Sorting Matches by Match Name, Descending" );
     Console.WriteLine();
     // Using the compare method for Match Abbr, as that is what the search returns.
-    var comparer = new CompareMatchAbbr(CompareMethod.MATCH_NAME, SortBy.DESCENDING);
+    var comparer = new CompareMatchAbbr( CompareMethod.MATCH_NAME, SortBy.DESCENDING );
     // Calling sort using the new comparer.
-    matchSearchList.Items.Sort(comparer);
+    matchSearchList.Items.Sort( comparer );
 
     // Manipulate the data in each match to show what we want.
     foreach (var matchAbbr in matchSearchList.Items) {
-        
+
         Console.WriteLine( "Match Name: \t\t" + matchAbbr.MatchName );
         Console.WriteLine( "ID: \t\t\t" + matchAbbr.MatchID.ToString() );
         Console.WriteLine( "Competition Dates: \t" + matchAbbr.StartDate.ToShortDateString() + " - " + matchAbbr.EndDate.ToShortDateString() );
         Console.WriteLine( "Match Location: \t" + matchAbbr.Location.City + ", " + matchAbbr.Location.State + ", " + matchAbbr.Location.Country );
 
         // Get the match detail, which holds the name of the squadding lists.
-        var matchDetailResponse = await client.GetMatchAsync(matchAbbr.MatchID);
-        if (matchDetailResponse.HasOkStatusCode)
-        {
+        var matchDetailResponse = await client.GetMatchAsync( matchAbbr.MatchID );
+        if (matchDetailResponse.HasOkStatusCode) {
             // Get the Name of the Squadding event from the MatchDetail
             var squaddingListName = matchDetailResponse.Match.SquaddingEvents[0].Name;
 
             // Retreives the result list (note this command only reteives the start of the list).
-            var getSquaddingListResponse = await client.GetSquaddingListAsync(matchAbbr.MatchID, squaddingListName);
-            if (getSquaddingListResponse.HasOkStatusCode)
-            {
+            var getSquaddingListResponse = await client.GetSquaddingListAsync( matchAbbr.MatchID, squaddingListName );
+            if (getSquaddingListResponse.HasOkStatusCode) {
 
                 // Reteive the Squadding List for match
                 var squaddingList = getSquaddingListResponse.SquaddingList.Items;
-                Console.WriteLine("Number of Participants: " + squaddingList.Count());
+                Console.WriteLine( "Number of Participants: " + squaddingList.Count() );
             }
         }
         Console.WriteLine();
