@@ -18,15 +18,18 @@ var threePositionCourseOfFire = await DefinitionCache.GetCourseOfFireDefinitionA
 Console.WriteLine( threePositionCourseOfFire.CommonName );
 Console.WriteLine( threePositionCourseOfFire.Description );
 Console.WriteLine( threePositionCourseOfFire.Discipline );
+Console.WriteLine( threePositionCourseOfFire.Subdiscipline );
 Console.WriteLine();
 
 /*
 3x20 Air Rifle
 Three-Position Air Rifle 3x20, position ordering for K-P-S
 RIFLE
+Three-Position Air Rifle
 */
 
-//Build the Event Tree which is the structure of the course of fire.
+// Build the Event Tree which is the structure of the course of fire.
+// Event Trees (using EventComposite) are much more easily traversed than the raw CourseOfFire definition, and also have convenient methods to get all events of a certain type, etc.
 var topLevelEvent = EventComposite.GrowEventTree( threePositionCourseOfFire );
 
 //Print out the stages to the COF
@@ -57,7 +60,7 @@ foreach (var stage in topLevelEvent.GetEvents( EventtType.STAGE )) {
 */
 
 Console.WriteLine();
-//Print out each range command
+// Print out each range command from the first avaliable RangeScript.
 foreach (var sg in threePositionCourseOfFire.RangeScripts[0].SegmentGroups) {
     foreach (var command in sg.Commands) {
         Console.WriteLine( command.Command );
