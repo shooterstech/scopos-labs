@@ -5,49 +5,58 @@ using Scopos.BabelFish.Helpers;
 using Scopos.BabelFish.Requests.ScoreHistoryAPI;
 using Scopos.BabelFish.Responses.ScoreHistoryAPI;
 using Scopos.BabelFish.Runtime;
+using Scopos.BabelFish.Runtime.Authentication;
 
-//You may use GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33 as a x-api-key to start working with our API.
-//However, this api key is limited in its use, and should not be used in any real application.
+// You may use GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33 as a x-api-key to start working with our API.
+// However, this api key is limited in its use, and should not be used in any real application.
 Initializer.Initialize( "GyaHV300my60rs2ylKug5aUgFnYBj6GrU6V1WE33", false );
-DefinitionAPIClient.LocalStoreDirectory = new DirectoryInfo( @"C:\temp" ); 
+DefinitionAPIClient.LocalStoreDirectory = new DirectoryInfo( @"C:\temp" );
 
-var scoreHistoryClient = new ScoreHistoryAPIClient( );
+var scoreHistoryClient = new ScoreHistoryAPIClient();
+var matchClient = new OrionMatchAPIClient();
 
-//A ScoreHistory Public Requests returns all publicly avaliable scores for a user.
-var scoreHistoryRequest = new GetScoreHistoryPublicRequest();
-//Specify a date range
-scoreHistoryRequest.StartDate = new DateTime( 2024, 01, 01 );
-scoreHistoryRequest.EndDate = new DateTime( 2024, 12, 31 );
-//Specify the user
-scoreHistoryRequest.UserIds = new List<string>() { "26f32227-d428-41f6-b224-beed7b6e8850" };
-//Specify the Event Style to lookup
+Console.WriteLine();
+Console.WriteLine( "##### Public ScoreHistory Request output #####." );
+Console.WriteLine();
+
+// A ScoreHistory Public Requests returns all publicly available scores for a user.
+// It does not return protected (practice) scores, to do this requires the Authenticated ScoreHistory Request (example below).
+var scoreHistoryPublicRequest = new GetScoreHistoryPublicRequest();
+// Specify a date range
+scoreHistoryPublicRequest.StartDate = new DateTime( 2024, 01, 01 );
+scoreHistoryPublicRequest.EndDate = new DateTime( 2024, 12, 31 );
+
+// Specify the user, identified by their user id. This is the same user we will authenticate with below, test_dev_7.
+scoreHistoryPublicRequest.UserIds = new List<string>() { "26f32227-d428-41f6-b224-beed7b6e8850" };
+
+// Specify the Event Style to lookup
 var eventStyleDef = "v1.0:ntparc:Three-Position Sporter Air Rifle";
-scoreHistoryRequest.EventStyleDef = SetName.Parse( eventStyleDef );
+scoreHistoryPublicRequest.EventStyleDef = SetName.Parse( eventStyleDef );
 
-GetScoreHistoryPublicResponse scoreHistoryResponse;
+GetScoreHistoryPublicResponse scoreHistoryPublicResponse;
 do {
     //Make the request
-    scoreHistoryResponse = await scoreHistoryClient.GetScoreHistoryPublicAsync( scoreHistoryRequest );
+    scoreHistoryPublicResponse = await scoreHistoryClient.GetScoreHistoryPublicAsync( scoreHistoryPublicRequest );
 
-    if (scoreHistoryResponse.HasOkStatusCode) {
-        foreach (var scoreHistoryBase in scoreHistoryResponse.ScoreHistoryList.Items) {
+    if (scoreHistoryPublicResponse.HasOkStatusCode) {
+        foreach (var scoreHistoryBase in scoreHistoryPublicResponse.ScoreHistoryList.Items) {
             //The response returns both ScoreHistoryEventStyleEntry and ScoreHistoryStageStyleEntry. We only want the event styles in this example.
             if (scoreHistoryBase is ScoreHistoryEventStyleEntry) {
                 var scoreHistoryEventStyle = (ScoreHistoryEventStyleEntry)scoreHistoryBase;
                 var cofSetName = SetName.Parse( scoreHistoryEventStyle.CourseOfFireDef );
                 var cofDefinition = await DefinitionCache.GetCourseOfFireDefinitionAsync( cofSetName );
                 //Print out the scores
-                Console.WriteLine( $"{scoreHistoryEventStyle.MatchName}  {StringFormatting.SpanOfDates(scoreHistoryEventStyle.StartDate, scoreHistoryEventStyle.EndDate)}  {cofDefinition.CommonName}  {scoreHistoryEventStyle.ScoreFormatted}" );
+                Console.WriteLine( $"{scoreHistoryEventStyle.MatchName}  {StringFormatting.SpanOfDates( scoreHistoryEventStyle.StartDate, scoreHistoryEventStyle.EndDate )}  {cofDefinition.CommonName}  {scoreHistoryEventStyle.ScoreFormatted}" );
             }
         }
 
         //Load more data if there is anymore to load.
-        if (scoreHistoryResponse.HasMoreItems) {
-            scoreHistoryRequest = (GetScoreHistoryPublicRequest)scoreHistoryResponse.GetNextRequest();
+        if (scoreHistoryPublicResponse.HasMoreItems) {
+            scoreHistoryPublicRequest = (GetScoreHistoryPublicRequest)scoreHistoryPublicResponse.GetNextRequest();
         }
     }
 
-} while (scoreHistoryResponse.HasMoreItems);
+} while (scoreHistoryPublicResponse.HasMoreItems);
 
 /*
     Test Qualification  Thu, 19 Dec 2024  3x10 Air Rifle  281 - 8
@@ -87,5 +96,130 @@ do {
     Test Air Rifle 3x20  Fri, 12 Jan 2024  3x20 Air Rifle  558 - 13
 */
 
-Console.WriteLine( "Press any key to close." );
+Console.WriteLine();
+Console.WriteLine( "##### Authenticated ScoreHistory Request output #####." );
+Console.WriteLine();
+
+// Next example will use the Authenticated ScoreHistory Request to retrieve both public (competition) and protected (practice) scores for a user.
+// This requires the user to be logged in and have the proper permissions to access their own protected scores.
+var userAuthentication = new UserAuthentication(
+    "test_dev_7@shooterstech.net",
+    "abcd1234" );
+await userAuthentication.InitializeAsync();
+
+var scoreHistoryAuthenticatedRequest = new GetScoreHistoryAuthenticatedRequest( userAuthentication );
+// Specify the same date range as before
+scoreHistoryAuthenticatedRequest.StartDate = new DateTime( 2024, 01, 01 );
+scoreHistoryAuthenticatedRequest.EndDate = new DateTime( 2024, 12, 31 );
+
+// NOTE the authenticated request does not require the user id to be specified, as it will automatically retrieve the scores for the logged in user.
+
+// In this example, also not going to specify the Event Style, so that all scores for the user will be returned, regardless of the Event Style.
+// We will however filter out the Event Style in the response, to show how to do so. And also filter out the StageStyles
+List<string> stageStyleList = new List<string>() {
+        "v1.0:ntparc:Sporter Air Rifle Prone",
+        "v1.0:ntparc:Sporter Air Rifle Standing",
+        "v1.0:ntparc:Sporter Air Rifle Kneeling"
+};
+
+// We will capture one of the Result COF IDs in the response, and provide an example below on how to retreive it.
+var resultCofId = string.Empty;
+
+GetScoreHistoryAuthenticatedResponse getScoreHistoryAuthenticatedResponse;
+do {
+    //Make the request
+    getScoreHistoryAuthenticatedResponse = await scoreHistoryClient.GetScoreHistoryAuthenticatedAsync( scoreHistoryAuthenticatedRequest );
+    if (getScoreHistoryAuthenticatedResponse.HasOkStatusCode) {
+
+        foreach (var scoreHistoryBase in getScoreHistoryAuthenticatedResponse.ScoreHistoryList.Items) {
+
+            //The response returns both ScoreHistoryEventStyleEntry and ScoreHistoryStageStyleEntry. Lets deal with the EventStyle scores first
+            if (scoreHistoryBase is ScoreHistoryEventStyleEntry) {
+                var scoreHistoryEventStyle = (ScoreHistoryEventStyleEntry)scoreHistoryBase;
+
+                // Since the request did not filter out by EventStyle, we'll do the equivalent operation here, post-request, to show how to do so.
+                if (scoreHistoryEventStyle.EventStyleDef != eventStyleDef) {
+                    continue;
+                }
+
+                // For the sake of this example, will also filter out Public scores, that we demoed above, and only show the protected (practice) scores.
+                if (scoreHistoryEventStyle.Visibility != Scopos.BabelFish.DataModel.Common.VisibilityOption.PROTECTED) {
+                    continue;
+                }
+
+                var cofSetName = SetName.Parse( scoreHistoryEventStyle.CourseOfFireDef );
+                var cofDefinition = await DefinitionCache.GetCourseOfFireDefinitionAsync( cofSetName );
+
+                // Print out the scores
+                Console.WriteLine( $"{scoreHistoryEventStyle.MatchName}  {StringFormatting.SpanOfDates( scoreHistoryEventStyle.StartDate, scoreHistoryEventStyle.EndDate )}  {cofDefinition.CommonName}  {scoreHistoryEventStyle.ScoreFormatted}" );
+
+                resultCofId = scoreHistoryEventStyle.ResultCOFID;
+
+            } else if (scoreHistoryBase is ScoreHistoryStageStyleEntry) {
+                var scoreHistoryStageStyle = (ScoreHistoryStageStyleEntry)scoreHistoryBase;
+
+                // Since the request did not filter out by StageStyle, we'll do the equivalent operation here, post-request, to show how to do so.
+                if (!stageStyleList.Contains( scoreHistoryStageStyle.StageStyleDef )) {
+                    continue;
+                }
+
+                // For the sake of this example, will also filter out Public scores, that we demoed above, and only show the protected (practice) scores.
+                if (scoreHistoryStageStyle.Visibility != Scopos.BabelFish.DataModel.Common.VisibilityOption.PROTECTED) {
+                    continue;
+                }
+
+                // And lets also filter out scores that are zero.
+                if (scoreHistoryStageStyle.Score.IsZero)
+                    continue;
+
+                var cofSetName = SetName.Parse( scoreHistoryStageStyle.CourseOfFireDef );
+                var cofDefinition = await DefinitionCache.GetCourseOfFireDefinitionAsync( cofSetName );
+                // Print out the scores
+                Console.WriteLine( $"{scoreHistoryStageStyle.MatchName}  {StringFormatting.SpanOfDates( scoreHistoryStageStyle.StartDate, scoreHistoryStageStyle.EndDate )}  {scoreHistoryStageStyle.StageStyleDef}  {scoreHistoryStageStyle.ScoreFormatted}" );
+            }
+        }
+
+        // Load more data if there is anymore to load.
+        if (getScoreHistoryAuthenticatedResponse.HasMoreItems) {
+            scoreHistoryAuthenticatedRequest = (GetScoreHistoryAuthenticatedRequest)getScoreHistoryAuthenticatedResponse.GetNextRequest();
+        }
+    }
+
+} while (getScoreHistoryAuthenticatedResponse.HasMoreItems);
+
+Console.WriteLine();
+Console.WriteLine( "##### Authenticated Result COF Request output #####." );
+Console.WriteLine();
+
+// For fun, we'll define our own format to display each shot's scores.
+// Full documentation at https://support.scopos.tech/index.html?string-formatting-score-format.html
+var shotScoreFormat = "{i}{X} ({d})";
+
+// Using the resultCofId that we obtained in the GetScoreHistoryAuthenticatedAsync(), we will retrieve the full set of data on the score, which is known as a Result COF
+var resultCofAuthenticatedResponse = await matchClient.GetResultCourseOfFireDetailAuthenticatedAsync( resultCofId, userAuthentication );
+if (resultCofAuthenticatedResponse.HasOkStatusCode) {
+    var resultCof = resultCofAuthenticatedResponse.ResultCOF;
+
+    // Print the scores for each Event in the Course of Fire
+    foreach (var eventScore in resultCof.EventScores.Values) {
+        Console.WriteLine( $"{eventScore.EventName} {eventScore.ScoreFormatted}" );
+    }
+
+    // When we go to print out the shot scores, the shots are unordered. To get the order of shots, we'll query the Course of Fire definition, which contains the order of shots.
+    var cofDefinition = await DefinitionCache.GetCourseOfFireDefinitionAsync( SetName.Parse( resultCof.CourseOfFireDef ) );
+    var eventTree = EventComposite.GrowEventTree( cofDefinition );
+
+    // Get a dictionary of shots by EventName, so that we can easily retrieve the shot score for each shot in the EventTree.
+    var shotsByEventName = resultCof.GetShotsByEventName();
+
+    // Print the scores for each Shot in the Course of Fire
+    // A 'Singular' is a leaf node in the EventTree, which represents a single shot.
+    foreach (var shotEvent in eventTree.GetAllSingulars()) {
+        // Using the shotEvent's name, retrieve the shot score from the Result COF, and print it out.
+        var shot = shotsByEventName[shotEvent.EventName];
+        var formattedScore = StringFormatting.FormatScore( shotScoreFormat, shot.Score );
+        Console.WriteLine( $"{shot.EventName} Location: ({shot.Location.X:F2} {shot.Location.Y:F2}) Score: {formattedScore}" );
+    }
+}
+
 Console.ReadKey();
