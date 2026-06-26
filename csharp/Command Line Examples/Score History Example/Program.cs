@@ -19,14 +19,16 @@ Console.WriteLine();
 Console.WriteLine( "##### Public ScoreHistory Request output #####." );
 Console.WriteLine();
 
-// A ScoreHistory Public Requests returns all publicly avaliable scores for a user.
+// A ScoreHistory Public Requests returns all publicly available scores for a user.
 // It does not return protected (practice) scores, to do this requires the Authenticated ScoreHistory Request (example below).
 var scoreHistoryPublicRequest = new GetScoreHistoryPublicRequest();
 // Specify a date range
 scoreHistoryPublicRequest.StartDate = new DateTime( 2024, 01, 01 );
 scoreHistoryPublicRequest.EndDate = new DateTime( 2024, 12, 31 );
-// Specify the user
+
+// Specify the user, identified by their user id. This is the same user we will authenticate with below, test_dev_7.
 scoreHistoryPublicRequest.UserIds = new List<string>() { "26f32227-d428-41f6-b224-beed7b6e8850" };
+
 // Specify the Event Style to lookup
 var eventStyleDef = "v1.0:ntparc:Three-Position Sporter Air Rifle";
 scoreHistoryPublicRequest.EventStyleDef = SetName.Parse( eventStyleDef );
@@ -110,7 +112,7 @@ var scoreHistoryAuthenticatedRequest = new GetScoreHistoryAuthenticatedRequest( 
 scoreHistoryAuthenticatedRequest.StartDate = new DateTime( 2024, 01, 01 );
 scoreHistoryAuthenticatedRequest.EndDate = new DateTime( 2024, 12, 31 );
 
-// NOTE the authenticated reqeust does not require the user id to be specified, as it will automatically retrieve the scores for the logged in user.
+// NOTE the authenticated request does not require the user id to be specified, as it will automatically retrieve the scores for the logged in user.
 
 // In this example, also not going to specify the Event Style, so that all scores for the user will be returned, regardless of the Event Style.
 // We will however filter out the Event Style in the response, to show how to do so. And also filter out the StageStyles
@@ -189,11 +191,11 @@ Console.WriteLine();
 Console.WriteLine( "##### Authenticated Result COF Request output #####." );
 Console.WriteLine();
 
-// For fun, well define our own format to display each shots scores.
+// For fun, we'll define our own format to display each shot's scores.
 // Full documentation at https://support.scopos.tech/index.html?string-formatting-score-format.html
 var shotScoreFormat = "{i}{X} ({d})";
 
-// Using the resultCofId that we obtained in the GetScoreHistoryAuthenticatedAsync(), we will retreive the full set of data on the score, which is known as a Result COF
+// Using the resultCofId that we obtained in the GetScoreHistoryAuthenticatedAsync(), we will retrieve the full set of data on the score, which is known as a Result COF
 var resultCofAuthenticatedResponse = await matchClient.GetResultCourseOfFireDetailAuthenticatedAsync( resultCofId, userAuthentication );
 if (resultCofAuthenticatedResponse.HasOkStatusCode) {
     var resultCof = resultCofAuthenticatedResponse.ResultCOF;
