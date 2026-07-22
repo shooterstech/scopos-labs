@@ -34,7 +34,8 @@ DateTime endDate = year25.AddDays( 0 ); // need to set
 int limit = 10;
 string ownerId = "OrionAccount000016";
 
-//Create the request object
+// Create the request object
+// By setting IncludeAwayMatches to true, the response will include Matches that Club Members (of club OrionAccount000016) participated in, but were not hosted by OrionAccount000016.
 var request = new ListMatchesPublicRequest() {
     OwnerId = ownerId,
     IncludeAwayMatches = true,
@@ -67,23 +68,7 @@ if (matchSearchResponse.HasOkStatusCode) {
         Console.WriteLine( "ID: \t\t\t" + matchAbbr.MatchID.ToString() );
         Console.WriteLine( "Owner ID: \t\t" + matchAbbr.OwnerId );
         Console.WriteLine( "Competition Dates: \t" + matchAbbr.StartDate.ToShortDateString() + " - " + matchAbbr.EndDate.ToShortDateString() );
-        Console.WriteLine( "Match Location: \t" + matchAbbr.Location.City + ", " + matchAbbr.Location.Region + ", " + matchAbbr.Location.Country );
 
-        // Get the match detail, which holds the name of the squadding lists.
-        var matchDetailResponse = await client.GetMatchAsync( matchAbbr.MatchID );
-        if (matchDetailResponse.HasOkStatusCode) {
-            // Get the Name of the Squadding event from the MatchDetail
-            var squaddingListName = matchDetailResponse.Match.SquaddingEvents[0].Name;
-
-            // Retreives the result list (note this command only reteives the start of the list).
-            var getSquaddingListResponse = await client.GetSquaddingListAsync( matchAbbr.MatchID, squaddingListName );
-            if (getSquaddingListResponse.HasOkStatusCode) {
-
-                // Reteive the Squadding List for match
-                var squaddingList = getSquaddingListResponse.SquaddingList.Items;
-                Console.WriteLine( "Number of Participants: " + squaddingList.Count() );
-            }
-        }
         Console.WriteLine();
     }
 }
@@ -92,67 +77,37 @@ Console.WriteLine( "Press any key to close." );
 Console.ReadKey();
 
 /*
-Items Returned: 10
-Search Dates: 1/2/2024 - 1/1/2025
+Items Returned: 6
+Search Dates: 1/1/2025 - 1/1/2026
 Sorting Matches by Match Name, Descending
 
-Match Name:             Practice Match 12/8/2024
-ID:                     1.2948.2024120816323626.0
-Competition Dates:      12/8/2024 - 12/8/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 9
+Match Name:             Test USAS SB 3x20
+ID:                     1.1.2025121610271329.0
+Owner ID:               OrionAcct000001
+Competition Dates:      12/16/2025 - 12/16/2025
 
-Match Name:             Practice Match 12/4/2024
-ID:                     1.2948.2024120416451405.0
-Competition Dates:      12/4/2024 - 12/4/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 17
+Match Name:             Test Spanning Text
+ID:                     1.1.2025122311175108.0
+Owner ID:               OrionAcct000001
+Competition Dates:      12/23/2025 - 12/24/2025
 
-Match Name:             Practice 12/21
-ID:                     1.2948.2024122116515713.0
-Competition Dates:      12/21/2024 - 12/21/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 2
+Match Name:             Test Multi-Relay Import
+ID:                     1.1.2025121213504726.0
+Owner ID:               OrionAcct000001
+Competition Dates:      12/12/2025 - 12/12/2025
 
-Match Name:             DAHS vs Tyrone Christian Academy JV 12/12/24
-ID:                     1.2948.2024121218430945.0
-Competition Dates:      12/12/2024 - 12/12/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 6
+Match Name:             Test Import SB 3x20
+ID:                     1.1.2025121015472732.0
+Owner ID:               OrionAcct000001
+Competition Dates:      12/10/2025 - 12/12/2025
 
-Match Name:             DAHS vs Tyrone Christan Academy 12/12/24
-ID:                     1.2948.2024121214243462.0
-Competition Dates:      12/12/2024 - 12/12/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 15
+Match Name:             Match 17 Dec 2025
+ID:                     1.1.2025121715384014.0
+Owner ID:               OrionAcct000001
+Competition Dates:      12/17/2025 - 12/17/2025
 
-Match Name:             DAHS vs Bishop Carroll Varsity 12/20/24
-ID:                     1.2948.2024121819273482.0
-Competition Dates:      12/20/2024 - 12/20/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 16
-
-Match Name:             DAHS vs Bishop Carroll JV 12/20/2024
-ID:                     1.2948.2024122018432887.0
-Competition Dates:      12/20/2024 - 12/20/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 8
-
-Match Name:             2024 4 th Quarter ACES Standing
-ID:                     1.2948.2024112517152752.0
-Competition Dates:      11/25/2024 - 11/25/2024
-Match Location:         DuBois, PA, USA
-Number of Participants: 2
-
-Match Name:             2024 - 2025 PA State Junior Olympic SB Championship
-ID:                     1.2948.2024122716400811.0
-Competition Dates:      12/28/2024 - 2/2/2025
-Match Location:         DuBois, PA, USA
-Number of Participants: 50
-
-Match Name:             2024 - 2025 PA State Junior Olympic Air Rifle Championship
-ID:                     1.2948.2024122716495515.0
-Competition Dates:      12/28/2024 - 3/31/2025
-Match Location:         DuBois, PA, USA
-Number of Participants: 50  
+Match Name:             Finals Test
+ID:                     1.1.2025121510503841.0
+Owner ID:               OrionAcct000001
+Competition Dates:      12/15/2025 - 12/15/2025
 */
